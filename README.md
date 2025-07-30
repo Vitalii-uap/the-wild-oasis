@@ -4,12 +4,12 @@
 
 ## Features
 
-- Admin dashboard with sales and stay duration charts.
-- User registration and login via Supabase.
-- Dark and light themes with local state persistence.
-- Reactive bookings table with deletion capability.
-- Code-splitting for optimized loading.
-- Error handling with reload support.
+- Admin dashboard with sales and stay duration charts
+- User registration and login via Supabase
+- Dark and light themes with local state persistence
+- Reactive bookings table with deletion capability
+- Code-splitting for optimized loading
+- Error handling with reload support
 
 ## Technologies
 
@@ -17,13 +17,35 @@
 - **Data and Authentication:** Supabase
 - **Visualization:** Recharts
 - **State and Queries:** React Query
-- **Styling and Utilities:** Tailwind CSS, date-fns
-- **Deployment:** Vercel
+- **Styling and Utilities:** styled-components
+- **Utilities:** date-fns
+- **Deployment:** Netlify
 
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/Vitalii-uap/the-wild-oasis.git
-   cd the-wild-oasis
-   ```
+
+```bash
+git clone https://github.com/Vitalii-uap/the-wild-oasis.git
+cd the-wild-oasis
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+## Deployment
+
+The project is deployed on https://the-wild-oasis-vitalii-uap.netlify.app/dashboard.
+
+---
+
+Feel free to contribute or open issues if you find bugs or have suggestions!
