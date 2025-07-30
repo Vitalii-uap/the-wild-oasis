@@ -73,3 +73,17 @@ export async function deleteCabin(id) {
   }
   return data;
 }
+
+export async function isCabinNameUnique(name) {
+  const { data, error } = await supabase
+    .from("cabins")
+    .select("id")
+    .ilike("name", name);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Could not check cabin name uniqueness");
+  }
+
+  return data.length === 0;
+}

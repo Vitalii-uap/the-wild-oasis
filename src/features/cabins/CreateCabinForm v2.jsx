@@ -5,31 +5,73 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 
-import { useCabinForm } from "./useCabinForm";
+import { useForm } from "react-hook-form";
+
 import { useCreateCabin } from "./useCreateCabin";
 import { useEditCabin } from "./useEditCabin";
+import { isCabinNameUnique } from "../../services/apiCabins";
 
 function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
-  const { createCabin } = useCreateCabin();
-  const { editCabin } = useEditCabin();
+  const { isCreating, createCabin } = useCreateCabin();
+  const { isEditing, editCabin } = useEditCabin();
+  const isWorking = isCreating || isEditing;
 
-  const { register, getValues, isWorking, onSubmit, errors } = useCabinForm({
-    cabinToEdit,
-    onSuccess: onCloseModal,
-    createCabin,
-    editCabin,
+  const { id: editId, ...editValues } = cabinToEdit;
+  const isEditSession = Boolean(editId);
+
+  const { register, handleSubmit, reset, getValues, formState } = useForm({
+    defaultValues: isEditSession ? editValues : {},
+    mode: "onBlur,", // resolver
   });
+  const { errors } = formState;
 
-  const isEditSession = Boolean(cabinToEdit?.id);
+  function onSubmit(data) {
+    const image = typeof data.image === "string" ? data.image : data.image[0];
+
+    if (isEditSession)
+      editCabin(
+        { newCabinData: { ...data, image: image }, id: editId },
+        {
+          onSuccess: () => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
+    else
+      createCabin(
+        { ...data, image: image },
+        {
+          onSuccess: () => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
+  }
+
+  function onError(errors) {
+    console.log(errors);
+  }
 
   return (
-    <Form onSubmit={onSubmit} type={onCloseModal ? "modal" : "regular"}>
+    <Form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
           type="text"
           id="name"
           disabled={isWorking}
-          {...register("name", { required: "This field is required" })}
+          {...register("name", {
+            required: "This field is required",
+            validate: async (value) => {
+              if (isEditSession) return true;
+              const isUnique = await isCabinNameUnique(value);
+              return isUnique || "Cabin name already exists";
+            },
+          })}
         />
       </FormRow>
 
@@ -93,9 +135,8 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         <Textarea
           id="description"
           disabled={isWorking}
-          {...register("description", {
-            required: "This field is required",
-          })}
+          defaultValue=""
+          {...register("description", { required: "This field is required" })}
         />
       </FormRow>
 
