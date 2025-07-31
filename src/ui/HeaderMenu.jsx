@@ -3,7 +3,7 @@ import { HiOutlineUser } from "react-icons/hi2";
 
 import styled from "styled-components";
 import ButtonIcon from "./ButtonIcon";
-import Logout from "../features/authentication/LogOut";
+import Logout from "../features/authentication/Logout";
 import DarkModeToggle from "./DarkModeToggle";
 
 const StyledHeaderMenu = styled.ul`
