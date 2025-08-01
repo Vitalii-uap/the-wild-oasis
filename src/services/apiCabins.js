@@ -39,6 +39,16 @@ export async function createEditCabin(newCabin, id) {
 
   if (error) {
     console.error(error);
+
+    // Check if it's a unique
+    if (
+      error.code === "23505" ||
+      error.message?.includes("duplicate key value") ||
+      error.message?.includes("unique constraint")
+    ) {
+      throw new Error("Cabin name already exists");
+    }
+
     throw new Error("Cabin could not be created");
   }
   // 2. Upload the image to Supabase Storage
