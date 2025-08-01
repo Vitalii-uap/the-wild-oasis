@@ -39,6 +39,16 @@ export async function createEditCabin(newCabin, id) {
 
   if (error) {
     console.error(error);
+
+    // Check if it's a unique
+    if (
+      error.code === "23505" ||
+      error.message?.includes("duplicate key value") ||
+      error.message?.includes("unique constraint")
+    ) {
+      throw new Error("Cabin name already exists");
+    }
+
     throw new Error("Cabin could not be created");
   }
   // 2. Upload the image to Supabase Storage
@@ -72,4 +82,18 @@ export async function deleteCabin(id) {
     throw new Error("Cabin could not be deleted");
   }
   return data;
+}
+
+export async function isCabinNameUnique(name) {
+  const { data, error } = await supabase
+    .from("cabins")
+    .select("id")
+    .ilike("name", name);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Could not check cabin name uniqueness");
+  }
+
+  return data.length === 0;
 }

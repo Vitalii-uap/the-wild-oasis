@@ -14,8 +14,19 @@ export function useCreateCabin() {
       });
       context?.onSuccess?.();
     },
+
+    // onError: (error) => {
+    //   toast.error("Cabin could not be created");
+    //   console.error(error);
+    // },
     onError: (error) => {
-      toast.error("Cabin could not be created");
+      if (error.message === "Cabin name already exists") {
+        toast.error(
+          "Cabin name already exists. Please choose a different name."
+        );
+      } else {
+        toast.error("Cabin could not be created");
+      }
       console.error(error);
     },
   });
