@@ -44,7 +44,7 @@ npm run dev
 
 ## Deployment
 
-The project is deployed on https://the-wild-oasis-vitalii-uap.vercel.app/dashboard.
+The project is deployed on https://the-wild-oasis-vitalii-uap.vercel.app/dashboard
 
 ---
 
