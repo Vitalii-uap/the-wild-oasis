@@ -48,4 +48,7 @@ The project is deployed on https://the-wild-oasis-vitalii-uap.vercel.app/dashboa
 
 ---
 
+user test1@test.com
+pass test123456
+
 Feel free to contribute or open issues if you find bugs or have suggestions!
